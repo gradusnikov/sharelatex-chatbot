@@ -1,0 +1,318 @@
+/* Resize Handle */
+.resize-handle {
+    position: absolute;
+    left: -5px; /* Left-side resize */
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: #afb5c0;
+    cursor: col-resize;
+    z-index: 1001;
+}
+.resize-handle:hover {
+    background: #3e70bb;
+}
+
+/* Ensure the panel can resize smoothly */
+.ai-chat {
+    width: 300px; /* Default width, will be overridden by drag */
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: transform 0.3s ease, width 0.1s ease; /* Smooth width transition */
+    background: #2c3645;
+    border-left: 1px solid #afb5c0;
+    z-index: 1000;
+    color: #fff;
+    font-family: "Lato", sans-serif;
+    box-sizing: border-box; /* Ensure padding doesn’t affect width */
+    visibility: hidden; /* Initially hidden until opened */
+}
+
+/* Main Chat Panel Layout */
+.ai-chat.open {
+    visibility: visible; /* Visible when open */
+}
+
+#chatbot-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header Section */
+#chatbot-header {
+    display: flex;
+    justify-content: flex-end; /* Align everything to the right */
+    align-items: center;
+    padding: 10px;
+    background: #1e2530;
+    font-weight: bold;
+    border-bottom: 1px solid #afb5c0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: flex-end; /* Align content to the right */
+    align-items: center;
+    width: 100%;
+}
+
+.header-text {
+    margin-right: 10px; /* Space between text and buttons */
+    margin-left: auto;
+    font-weight: bold;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+#chatbot-header button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px; /* Reduced padding for tighter fit */
+}
+
+#chatbot-header button:hover {
+    color: #3e70bb;
+}
+
+#chatbot-clear i {
+    font-size: 16px; /* Adjust icon size for consistency */
+}
+
+/* Messages Area */
+#chatbot-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #2c3645; /* Matches main panel background */
+}
+
+.message {
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.message.user {
+    background-color: rgba(62, 112, 187, 0.1); /* Light blue for user messages */
+}
+
+.message.assistant {
+    background-color: rgba(255, 255, 255, 0.05); /* Very light gray for assistant messages */
+}
+
+.message.system {
+    background-color: rgba(255, 0, 0, 0.1); /* Light red for system messages */
+    color: #ff6b6b; /* Red text for system messages */
+}
+
+.message-content {
+    word-wrap: break-word;
+}
+
+.message-content strong {
+    color: #3e70bb; /* ShareLaTeX blue for labels */
+    margin-right: 8px;
+}
+
+/* Input Area */
+#chatbot-input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #afb5c0; /* Neutral gray border */
+    background: #2c3645; /* Matches main panel background */
+}
+
+#chatbot-input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc; /* Light gray border for input */
+    border-radius: 1.5625em; /* Rounded corners */
+    color: #5d6879; /* Gray text for input placeholder */
+    background: #fff; /* White background for input */
+}
+
+#chatbot-input:focus {
+    border-color: #3e70bb; /* ShareLaTeX blue for focus */
+    outline: none;
+}
+
+#chatbot-send {
+    width: 60px;
+    padding: 5px;
+    background: #3e70bb; /* ShareLaTeX blue for button */
+    border: none;
+    border-radius: 9999px; /* Fully rounded button */
+    color: #fff;
+    cursor: pointer;
+}
+
+#chatbot-send:hover {
+    background: #2857a1; /* Darker blue for hover */
+}
+
+/* Message Formatting */
+.message-text {
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+.message-text p {
+    margin: 0.5em 0;
+}
+
+.message-text h1,
+.message-text h2,
+.message-text h3 {
+    margin: 1em 0 0.5em;
+    color: #fff; /* White headers for contrast */
+}
+
+.message-text ul,
+.message-text ol {
+    margin: 0.5em 0;
+    padding-left: 2em;
+}
+
+.message-text li {
+    margin: 0.3em 0;
+}
+
+.message-text a {
+    color: #3e70bb; /* ShareLaTeX blue for links */
+    text-decoration: none;
+}
+
+.message-text a:hover {
+    text-decoration: underline;
+}
+
+.message-text blockquote {
+    margin: 0.5em 0;
+    padding-left: 1em;
+    border-left: 3px solid #3e70bb; /* Blue border for quotes */
+    color: #888; /* Light gray for quote text */
+}
+
+.message-text table {
+    border-collapse: collapse;
+    margin: 1em 0;
+    width: 100%;
+}
+
+.message-text th,
+.message-text td {
+    border: 1px solid #444; /* Dark gray border for tables */
+    padding: 0.5em;
+    text-align: left;
+}
+
+.message-text th {
+    background-color: #2d2d2d; /* Dark gray for table headers */
+}
+
+/* Code Blocks */
+.code-block {
+    margin: 1em 0;
+    background-color: #1e1e1e; /* Dark background for code */
+    border-radius: 6px;
+    overflow: hidden; /* Prevent any overflow or unwanted spacing */
+    padding: 0; /* Ensure no padding adds height */
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Ensure height fits content */
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2d2d2d; /* Slightly lighter dark gray for header */
+    padding: 0.5em 1em; /* Maintain padding but ensure it’s consistent */
+    border-bottom: 1px solid #3d3d3d; /* Dark gray border */
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.code-language {
+    color: #888; /* Light gray for language label */
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.copy-button {
+    background-color: transparent;
+    border: 1px solid #666; /* Medium gray border */
+    color: #fff;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+}
+
+.copy-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Light gray hover effect */
+    border-color: #888; /* Lighter gray on hover */
+}
+
+.copy-button i {
+    font-size: 1.1em; /* Ensure Font Awesome icon is visible */
+}
+
+.code-block pre {
+    margin: 0; /* Remove any default margin */
+    padding: 1em; /* Consistent padding for code content */
+    overflow-x: auto; /* Allow horizontal scrolling for long lines */
+    background-color: #1e1e1e !important; /* Ensure dark background */
+    flex-grow: 1; /* Allow pre to grow to fill available space */
+    word-wrap: break-word;
+}
+
+.code-block code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+    color: #fff; /* White text for code */
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    white-space: pre; /* Preserve whitespace for code */
+}
+
+/* Inline Code */
+.inline-code {
+    background-color: rgba(0, 0, 0, 0.1); /* Slight dark overlay */
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9em;
+    color: #fff; /* White text for inline code */
+}
+
+/* Loading Animation */
+.message.loading {
+    background-color: transparent;
+}
+
+.loading-dots {
+    color: #888; /* Light gray for loading dots */
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
